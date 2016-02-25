@@ -40,6 +40,7 @@ class Drip(models.Model):
     subject_template = models.TextField(null=True, blank=True)
     body_html_template = models.TextField(null=True, blank=True,
         help_text='You will have settings and user in the context.')
+    body_plain_template = models.TextField(null=True, blank=True)
     message_class = models.CharField(max_length=120, blank=True, default='default')
 
     @property
@@ -52,7 +53,8 @@ class Drip(models.Model):
                         from_email_name=self.from_email_name if self.from_email_name else None,
                         reply_to=self.reply_to if self.reply_to else None,
                         subject_template=self.subject_template if self.subject_template else None,
-                        body_template=self.body_html_template if self.body_html_template else None)
+                        body_template=self.body_html_template if self.body_html_template else None,
+                        plain_template=self.body_plain_template if self.body_plain_template else None)
         return drip
 
     def __unicode__(self):

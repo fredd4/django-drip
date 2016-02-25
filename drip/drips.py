@@ -7,7 +7,6 @@ from django.conf import settings
 from django.db.models import Q
 from django.template import Context, Template
 from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
 from django.contrib.auth.models import User
 
 from drip.models import SentDrip, Subscription
@@ -38,7 +37,6 @@ def message_class_for(name):
 
 
 class DripMessage(object):
-
     def __init__(self, drip_base, user):
         self.drip_base = drip_base
         self.user = user
@@ -77,18 +75,23 @@ class DripMessage(object):
         if not self._body:
             body = Template(self.drip_base.body_template).render(self.context)
             if self.drip_base.drip_model.marketing is True:
-                body += '\n\n'
-                body += '------------------------------' * 2
                 c = Subscription.for_user(self.user).unsubscribe_code
                 link = 'https://getsiphon.com/drip/unsubscribe/?code=%s' % c
-                body += '\n\n** Unsubscribe: %s' % link
+                body += '<br /><br /><a href="%s">Unsubscribe</a>' % link
             self._body = body
         return self._body
 
     @property
     def plain(self):
         if not self._plain:
-            self._plain = strip_tags(self.body)
+            plain = Template(self.drip_base.plain_template).render(self.content)
+            if self.drip_base.drip_model.marketing is True:
+                body += '\n\n'
+                body += '-----------------------------'
+                c = Subscription.for_user(self.user).unsubscribe_code
+                link = 'https://getsiphon.com/drip/unsubscribe/?code=%s' % c
+                body += '\n\n** Unsubscribe: %s' % link
+            self._plain = plain
         return self._plain
 
     @property
@@ -122,6 +125,7 @@ class DripBase(object):
     name = None
     subject_template = None
     body_template = None
+    plain_template = None
     from_email = None
     from_email_name = None
     reply_to = None
@@ -135,6 +139,7 @@ class DripBase(object):
         self.reply_to = kwargs.pop('reply_to', self.reply_to)
         self.subject_template = kwargs.pop('subject_template', self.subject_template)
         self.body_template = kwargs.pop('body_template', self.body_template)
+        self.plain_template = kwargs.pop('plain_template', self.plain_template)
 
         if not self.name:
             raise AttributeError('You must define a name.')
