@@ -280,6 +280,13 @@ class DripBase(object):
             except Exception as e:
                 logging.error("Failed to send drip %s to user %s: %s" % (self.drip_model.id, user, e))
 
+        # If this is a newsletter
+        if self.drip_model.newsletter:
+            print('[%s] Newsletter "%s" sent, disabling it' % (
+                datetime.utcnow(), self.drip_mode.name))
+            self.drip_model.enabled = False
+            self.drip_model.save()
+
         return count
 
 

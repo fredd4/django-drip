@@ -26,6 +26,9 @@ class Drip(models.Model):
         help_text='A unique name for this drip.')
 
     enabled = models.BooleanField(default=False)
+    newsletter = models.BooleanField(default=False,
+        help_text='If true, this drip will be disabled immediately after it ' \
+                  'is sent to all applicable users.')
     marketing = models.BooleanField(default=True,
         help_text='If true, users who have unsubscribed will not get this ' \
                   'email. An unsubscribe link will be added automatically to ' \

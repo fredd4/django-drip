@@ -23,7 +23,7 @@ class DripForm(forms.ModelForm):
 
 
 class DripAdmin(admin.ModelAdmin):
-    list_display = ('name', 'enabled', 'marketing', 'message_class')
+    list_display = ('name', 'enabled', 'marketing', 'newsletter', 'message_class')
     inlines = [
         QuerySetRuleInline,
     ]
