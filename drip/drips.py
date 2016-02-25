@@ -84,7 +84,7 @@ class DripMessage(object):
     @property
     def plain(self):
         if not self._plain:
-            plain = Template(self.drip_base.plain_template).render(self.content)
+            plain = Template(self.drip_base.plain_template).render(self.context)
             if self.drip_base.drip_model.marketing is True:
                 body += '\n\n'
                 body += '-----------------------------'
@@ -283,7 +283,7 @@ class DripBase(object):
         # If this is a newsletter
         if self.drip_model.newsletter:
             print('[%s] Newsletter "%s" sent, disabling it' % (
-                datetime.utcnow(), self.drip_mode.name))
+                datetime.utcnow(), self.drip_model.name))
             self.drip_model.enabled = False
             self.drip_model.save()
 
