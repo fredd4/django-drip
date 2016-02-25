@@ -77,7 +77,7 @@ class DripMessage(object):
             if self.drip_base.drip_model.marketing is True:
                 c = Subscription.for_user(self.user).unsubscribe_code
                 link = 'https://getsiphon.com/drip/unsubscribe/?code=%s' % c
-                body += '<br /><br /><a href="%s">Unsubscribe</a>' % link
+                body += '<br /><br /><a href="%s">Unsubscribe from future emails</a>' % link
             self._body = body
         return self._body
 
@@ -86,11 +86,11 @@ class DripMessage(object):
         if not self._plain:
             plain = Template(self.drip_base.plain_template).render(self.context)
             if self.drip_base.drip_model.marketing is True:
-                body += '\n\n'
-                body += '-----------------------------'
+                plain += '\n\n'
+                plain += '-----------------------------'
                 c = Subscription.for_user(self.user).unsubscribe_code
                 link = 'https://getsiphon.com/drip/unsubscribe/?code=%s' % c
-                body += '\n\n** Unsubscribe: %s' % link
+                plain += '\n\n** Unsubscribe: %s' % link
             self._plain = plain
         return self._plain
 
