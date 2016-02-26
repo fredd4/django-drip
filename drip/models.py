@@ -5,8 +5,7 @@ from datetime import datetime, timedelta
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.conf import settings
-
-User = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
+from django.contrib.auth.models import User
 
 
 # just using this to parse, but totally insane package naming...
