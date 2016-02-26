@@ -109,7 +109,7 @@ class DripMessage(object):
                 self._message.reply_to=[self.reply_to]
 
             # check if there are html tags in the rendered template
-            if self.body and len(self.body > 0):
+            if self.body and len(self.body) > 0:
                 self._message.attach_alternative(self.body, 'text/html')
         return self._message
 
@@ -278,7 +278,7 @@ class DripBase(object):
                 print('[%s] SENT "%s" -> %s' % (datetime.utcnow(),
                     self.drip_model.name, user.email))
             except Exception as e:
-                logging.error("Failed to send drip %s to user %s: %s" % (self.drip_model.id, user, e))
+                print("Failed to send drip %s to user %s: %s" % (self.drip_model.id, user, e))
 
         # If this is a newsletter
         if self.drip_model.newsletter:
