@@ -109,7 +109,7 @@ class DripMessage(object):
                 self._message.reply_to=[self.reply_to]
 
             # check if there are html tags in the rendered template
-            if len(self.plain) != len(self.body):
+            if self.body and len(self.body > 0):
                 self._message.attach_alternative(self.body, 'text/html')
         return self._message
 
