@@ -72,7 +72,7 @@ class DripMessage(object):
 
     @property
     def body(self):
-        if not self._body:
+        if not self._body and self.drip_base.body_template:
             body = Template(self.drip_base.body_template).render(self.context)
             if self.drip_base.drip_model.marketing is True:
                 c = Subscription.for_user(self.user).unsubscribe_code
@@ -272,7 +272,7 @@ class DripBase(object):
                         from_email_name=self.from_email_name,
                         reply_to=self.reply_to,
                         subject=message_instance.subject,
-                        body=message_instance.body
+                        body='<empty>'
                     )
                     count += 1
                 print('[%s] SENT "%s" -> %s' % (datetime.utcnow(),
